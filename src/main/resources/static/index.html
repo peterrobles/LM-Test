@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.4/bootstrap-table.min.css" integrity="sha256-Bfo5E75379SXUZYuhGkuEc1K8EjSSpR/VF/axOVB8nw=" crossorigin="anonymous" />
+    <title>Generate Receipt</title>
+</head>
+    <body>
+        <div class="container">
+            <form name="itemsForm">
+                <div class="row">
+                    <table id="table" class="display table table-bordered">
+                        <thead>
+                            <tr>
+                                <th data-field="id" data-formatter="inputNumberFormatter">Quantity</th>
+                                <th data-field="name">Name</th>
+                                <th data-field="price">Price</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="row">
+                    <input type="button" id="submitButton" class="btn btn-primary" value="Generate receipt">
+                </div>
+            </form>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.4/bootstrap-table.min.js" integrity="sha256-zuYwDcub7myT0FRW3/WZI7JefCjyTmBJIoCS7Rb9xQc=" crossorigin="anonymous"></script>
+
+        <script>
+            $(document).ready(function() {
+                $.ajax({
+                    method: 'GET',
+                    url: '/items',
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#table').bootstrapTable({
+                            data: data
+                        });
+                    },
+                    error: function(e) {
+                        console.log(e.responseText);
+                    }
+                });
+
+                $('#submitButton').on('click', function(event) {
+                    var form = $('form[name=itemsForm]');
+                    var params = [];
+                    $('input[type=number]').each(function() {
+                        var qty = $(this).val();
+                        if (parseInt(qty) > 0) {
+                            var param = {
+                                itemId: parseInt($(this).attr("id")),
+                                quantity: parseInt(qty)
+                            };
+                            params.push(param);
+                        }
+                    });
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/receipts',
+                        contentType: 'application/json;charset=UTF-8',
+                        data: JSON.stringify(params),
+                        dataType: 'json',
+                        success: function (json) {
+                            alert(JSON.stringify(json, null, ' '));
+                        }
+                    });
+                });
+            });
+            function inputNumberFormatter(value) {
+                return '<input type="number" min="0" max="10" id="' + value + '" name="quantities" class="form-control" />';
+            }
+        </script>
+    </body>
+</html>
