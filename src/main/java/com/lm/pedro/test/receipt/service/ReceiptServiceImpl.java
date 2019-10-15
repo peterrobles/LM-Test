@@ -61,7 +61,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         double itemSalesTax = 0.00D;
         Item receiptItem = itemQuantity.getItem();
         double itemPrice = receiptItem.getPrice();
-        if (!receiptItem.isExempt()) {
+        if (receiptItem.isNotExempt()) {
             itemSalesTax = calculatePercentageToNearest20th(itemPrice, BASIC_SALES_TAX_PERCENTAGE);
         }
         if (receiptItem.isImported()) {

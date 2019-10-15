@@ -37,4 +37,8 @@ public class Item implements Serializable {
 
     @Column(name = "ACTIVE")
     private boolean active;
+
+    public boolean isNotExempt() {
+        return !this.isExempt();
+    }
 }
