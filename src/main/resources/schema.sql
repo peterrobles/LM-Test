@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS ITEMS;
 
 CREATE TABLE ITEMS (
   ID            BIGINT(11)      NOT NULL AUTO_INCREMENT,
-  NAME          VARCHAR(250)    NOT NULL,
+  NAME          VARCHAR2(250)   NOT NULL,
   PRICE         DOUBLE          NOT NULL,
   IMPORTED      INT(1)          NOT NULL,
   EXEMPT        INT(1)          NOT NULL,
