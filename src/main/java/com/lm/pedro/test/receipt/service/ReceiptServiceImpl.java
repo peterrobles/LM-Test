@@ -24,7 +24,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         double totalSalesTax = 0.00D;
         double total = 0.00D;
-        for (ItemQuantity itemQuantity: itemsQuantity) {
+        for (ItemQuantity itemQuantity : itemsQuantity) {
             double subtotal = itemQuantity.getItem().getPrice();
             double itemSalesTax = calculateItemSalesTax(itemQuantity);
             int quantity = itemQuantity.getQuantity();
@@ -68,7 +68,7 @@ public class ReceiptServiceImpl implements ReceiptService {
             itemSalesTax = sum(itemSalesTax, calculatePercentageToNearest20th(itemPrice, IMPORTS_SALES_TAX_PERCENTAGE));
         }
         return BigDecimal.valueOf(itemSalesTax)
-                .multiply(BigDecimal.valueOf( itemQuantity.getQuantity()))
+                .multiply(BigDecimal.valueOf(itemQuantity.getQuantity()))
                 .setScale(DECIMAL_DIGITS, RoundingMode.HALF_DOWN)
                 .doubleValue();
     }

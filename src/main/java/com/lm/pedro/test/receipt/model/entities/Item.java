@@ -19,7 +19,8 @@ public class Item implements Serializable {
 
     private static final long serialVersionUID = 5052271440262044656L;
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "NAME")
